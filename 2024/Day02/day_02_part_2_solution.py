@@ -95,13 +95,28 @@ def is_safe(line: str) -> bool:
     - The numbers are either strictly increasing or strictly decreasing.
     - Any two adjacent numbers differ by at least 1 and at most 3.
 
+    Additionally, if the line does not meet these criteria, the function will
+    check if removing exactly one number makes the line safe.
+
     Args:
         line (str): A string containing space-separated integers.
 
     Returns:
-        bool: True if the line is safe, False otherwise.
+        bool: True if the line is safe or can be made safe by removing one number, False otherwise.
     """
-    return difference_is_valid(line) and (is_decreasing(line) or is_increasing(line))
+    if difference_is_valid(line) and (is_decreasing(line) or is_increasing(line)):
+        return True
+    else:
+        numbers = list(map(int, line.split()))
+        for index in range(len(numbers)):
+            new_numbers = numbers[:index] + numbers[index + 1 :]
+            new_line = " ".join(map(str, new_numbers))
+            if difference_is_valid(new_line) and (
+                is_decreasing(new_line) or is_increasing(new_line)
+            ):
+                return True
+        else:
+            return False
 
 
 def solve(input_file: str = INPUT_FILE) -> int:
@@ -110,10 +125,12 @@ def solve(input_file: str = INPUT_FILE) -> int:
 
     This function reads the input file, evaluates each line to determine
     if it is "safe", and counts the total number of safe lines.
-    
+
     A line is considered "safe" if:
     - The numbers are either strictly increasing or strictly decreasing.
     - Any two adjacent numbers differ by at least 1 and at most 3.
+    - If the line does not meet these criteria, the function will check if removing
+      exactly one number makes the line safe.
 
     Args:
         input_file (str, optional): Path to the input file.
