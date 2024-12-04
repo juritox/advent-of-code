@@ -19,13 +19,15 @@ def read_input(file_path: str) -> str:
 
     Raises:
         FileNotFoundError: If the file does not exist.
+        IOError: If there's an issue reading the file.
     """
-    if not os.path.exists(file_path):
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            return file.read()
+    except FileNotFoundError:
         raise FileNotFoundError(f"The file '{file_path}' does not exist.")
-
-    with open(file_path, "r", encoding="utf-8") as file:
-        content = file.read()
-        return content
+    except IOError as e:
+        raise IOError(f"Error reading file '{file_path}': {e}")
 
 
 def difference_is_valid(line: str) -> bool:
@@ -110,7 +112,7 @@ def solve(input_file: str = INPUT_FILE) -> int:
 
     This function reads the input file, evaluates each line to determine
     if it is "safe", and counts the total number of safe lines.
-    
+
     A line is considered "safe" if:
     - The numbers are either strictly increasing or strictly decreasing.
     - Any two adjacent numbers differ by at least 1 and at most 3.
