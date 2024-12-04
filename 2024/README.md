@@ -1,7 +1,7 @@
 # Advent of Code 2024 - Python Solutions
 
 ## Challenge Overview
-Python solutions for Advent of Code 2024 programming puzzles.
+Python solutions for [Advent of Code 2024](https://adventofcode.com/2024) programming puzzles.
 
 ## Progress Status
 ### 2024 Completion
