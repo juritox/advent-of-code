@@ -1,0 +1,73 @@
+name: Python Lint and Type Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  mypy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Get source code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      # Restore pip cache
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Install project dependencies and linters
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install ruff mypy pydocstyle pydoclint
+
+      # Restore MyPy cache
+      - name: Restore MyPy cache
+        uses: actions/cache@v4
+        with:
+          path: .mypy_cache
+          key: mypy-${{ runner.os }}-${{ hashFiles('**/*.py', 'requirements.txt') }}
+          restore-keys: |
+            mypy-${{ runner.os }}-
+
+      # Restore Ruff cache
+      - name: Restore Ruff cache
+        uses: actions/cache@v4
+        with:
+          path: .ruff_cache
+          key: ruff-${{ runner.os }}-${{ hashFiles('**/*.py', 'pyproject.toml') }}
+          restore-keys: |
+            ruff-${{ runner.os }}-
+
+      # Run Ruff linter
+      - name: Run Ruff
+        run: ruff check .
+
+      # Run MyPy static type checker
+      - name: Run MyPy
+        run: mypy .
+
+      # Check docstring style
+      - name: Run pydocstyle
+        run: pydocstyle .
+
+      # Check docstring correctness
+      - name: Run pydoclint
+        run: pydoclint .

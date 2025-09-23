@@ -1,18 +1,16 @@
-"""
-Solution to Advent of Code 4th December 2024 part 2.
-"""
+"""Solution to Advent of Code 4th December 2024 part 2."""
 
-import os
+from pathlib import Path
 
-INPUT_FILE = os.path.join(os.path.dirname(__file__), "input.txt")
+INPUT_FILE = Path(__file__).parent / "input.txt"
 
 
-def read_input(file_path: str) -> str:
+def read_input(file_path: Path) -> str:
     """
     Read the contents of a file and return them as a string.
 
     Args:
-        file_path (str): The path to the input file to be read.
+        file_path (Path): The path to the input file to be read.
 
     Returns:
         str: The contents of the file as a string.
@@ -22,8 +20,7 @@ def read_input(file_path: str) -> str:
         IOError: If there's an issue reading the file.
     """
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.read()
+        return file_path.read_text(encoding="utf-8")
     except FileNotFoundError:
         raise FileNotFoundError(f"The file '{file_path}' does not exist.")
     except IOError as e:
@@ -56,12 +53,8 @@ def find_all_As(puzzle: str) -> list[tuple[int, int]]:
     """
     lines = get_all_horizontal_lines(puzzle)
     all_As = []
-    for line_index, line in enumerate(
-        lines[1:-1], start=1
-    ):  # Skip the first and last lines
-        for char_index, char in enumerate(
-            line[1:-1], start=1
-        ):  # Skip the first and last characters in each line
+    for line_index, line in enumerate(lines[1:-1], start=1):  # Skip the first and last lines
+        for char_index, char in enumerate(line[1:-1], start=1):  # Skip the first and last characters in each line
             if char == "A":
                 all_As.append((line_index, char_index))
     return all_As
@@ -138,7 +131,7 @@ def check_x_mas(puzzle: str, position: tuple[int, int]) -> bool:
         return False
 
 
-def solve(input_file: str = INPUT_FILE) -> int:
+def solve(input_file: Path = INPUT_FILE) -> int:
     """
     Solve the Advent of Code challenge for the given input file.
 
@@ -154,8 +147,7 @@ def solve(input_file: str = INPUT_FILE) -> int:
     4. "SM" above and "SM" below
 
     Args:
-        input_file (str, optional): Path to the input file.
-        Defaults to INPUT_FILE.
+        input_file (Path, optional): Path to the input file. Defaults to INPUT_FILE.
 
     Returns:
         int: The total number of valid X-MAS patterns found in the puzzle.

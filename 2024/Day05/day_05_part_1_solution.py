@@ -1,18 +1,16 @@
-"""
-Solution to Advent of Code 5th December 2024 part 1.
-"""
+"""Solution to Advent of Code 5th December 2024 part 1."""
 
-import os
+from pathlib import Path
 
-INPUT_FILE = os.path.join(os.path.dirname(__file__), "input.txt")
+INPUT_FILE = Path(__file__).parent / "input.txt"
 
 
-def read_input(file_path: str) -> str:
+def read_input(file_path: Path) -> str:
     """
     Read the contents of a file and return them as a string.
 
     Args:
-        file_path (str): The path to the input file to be read.
+        file_path (Path): The path to the input file to be read.
 
     Returns:
         str: The contents of the file as a string.
@@ -22,8 +20,7 @@ def read_input(file_path: str) -> str:
         IOError: If there's an issue reading the file.
     """
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.read()
+        return file_path.read_text(encoding="utf-8")
     except FileNotFoundError:
         raise FileNotFoundError(f"The file '{file_path}' does not exist.")
     except IOError as e:
@@ -111,7 +108,7 @@ def extract_middle_number(update: str) -> int:
     return int(pages[middle_index])
 
 
-def solve(input_file: str = INPUT_FILE) -> int:
+def solve(input_file: Path = INPUT_FILE) -> int:
     """
     Solve the Advent of Code challenge for the given input file.
 
@@ -120,8 +117,7 @@ def solve(input_file: str = INPUT_FILE) -> int:
     page numbers from valid updates.
 
     Args:
-        input_file (str, optional): Path to the input file.
-        Defaults to INPUT_FILE.
+        input_file (Path, optional): Path to the input file. Defaults to INPUT_FILE.
 
     Returns:
         int: The sum of middle page numbers from all valid updates.

@@ -1,18 +1,16 @@
-"""
-Solution to Advent of Code 4th December 2024 part 1.
-"""
+"""Solution to Advent of Code 4th December 2024 part 1."""
 
-import os
+from pathlib import Path
 
-INPUT_FILE = os.path.join(os.path.dirname(__file__), "input.txt")
+INPUT_FILE = Path(__file__).parent / "input.txt"
 
 
-def read_input(file_path: str) -> str:
+def read_input(file_path: Path) -> str:
     """
     Read the contents of a file and return them as a string.
 
     Args:
-        file_path (str): The path to the input file to be read.
+        file_path (Path): The path to the input file to be read.
 
     Returns:
         str: The contents of the file as a string.
@@ -22,8 +20,7 @@ def read_input(file_path: str) -> str:
         IOError: If there's an issue reading the file.
     """
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.read()
+        return file_path.read_text(encoding="utf-8")
     except FileNotFoundError:
         raise FileNotFoundError(f"The file '{file_path}' does not exist.")
     except IOError as e:
@@ -40,7 +37,6 @@ def count_xmas(line: str) -> int:
     Returns:
         int: The total count of "XMAS" in the line.
     """
-
     num_of_xmas = line.count("XMAS")
 
     return num_of_xmas
@@ -56,7 +52,6 @@ def count_samx(line: str) -> int:
     Returns:
         int: The total count of "SAMX" in the line.
     """
-
     num_of_samx = line.count("SAMX")
 
     return num_of_samx
@@ -168,7 +163,7 @@ def get_all_secondary_diagonal_lines(puzzle: str) -> list[str]:
     return secondary_diagonals
 
 
-def solve(input_file: str = INPUT_FILE) -> int:
+def solve(input_file: Path = INPUT_FILE) -> int:
     """
     Solve the Advent of Code challenge for the given input file.
 
@@ -177,8 +172,7 @@ def solve(input_file: str = INPUT_FILE) -> int:
     The "SAMX" is XMAS backwards so it calculates it for both directions.
 
     Args:
-        input_file (str, optional): Path to the input file.
-        Defaults to INPUT_FILE.
+        input_file (Path, optional): Path to the input file. Defaults to INPUT_FILE.
 
     Returns:
         int: The total sum of XMAS in a puzzle.

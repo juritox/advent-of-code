@@ -1,18 +1,16 @@
-"""
-Solution to Advent of Code 1st December 2024 part 1.
-"""
+"""Solution to Advent of Code 1st December 2024 part 1."""
 
-import os
+from pathlib import Path
 
-INPUT_FILE = os.path.join(os.path.dirname(__file__), "input.txt")
+INPUT_FILE = Path(__file__).parent / "input.txt"
 
 
-def read_input(file_path: str) -> str:
+def read_input(file_path: Path) -> str:
     """
     Read the contents of a file and return them as a string.
 
     Args:
-        file_path (str): The path to the input file to be read.
+        file_path (Path): The path to the input file to be read.
 
     Returns:
         str: The contents of the file as a string.
@@ -22,8 +20,7 @@ def read_input(file_path: str) -> str:
         IOError: If there's an issue reading the file.
     """
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.read()
+        return file_path.read_text(encoding="utf-8")
     except FileNotFoundError:
         raise FileNotFoundError(f"The file '{file_path}' does not exist.")
     except IOError as e:
@@ -66,26 +63,21 @@ def calculate_difference(lists: tuple[list[int], list[int]]) -> int:
     """
     list_1, list_2 = lists
 
-    total_difference = sum(
-        abs(number_1 - number_2) for number_1, number_2 in zip(list_1, list_2)
-    )
+    total_difference = sum(abs(number_1 - number_2) for number_1, number_2 in zip(list_1, list_2))
 
     return total_difference
 
 
-def solve(input_file: str = INPUT_FILE) -> int:
+def solve(input_file: Path = INPUT_FILE) -> int:
     """
-    Solve the Advent of Code challenge by reading input, sorting lists,
-    and calculating the difference.
+    Solve the Advent of Code challenge by reading input, sorting lists, and calculating the difference.
 
     Args:
-        input_file (str, optional): Path to the input file.
-        Defaults to INPUT_FILE.
+        input_file (Path, optional): Path to the input file. Defaults to INPUT_FILE.
 
     Returns:
         int: The solution to the challenge.
     """
-
     input_content = read_input(input_file)
     sorted_lists = sort_lists(input_content)
     return calculate_difference(sorted_lists)

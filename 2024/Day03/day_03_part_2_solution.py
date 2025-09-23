@@ -1,20 +1,21 @@
-"""
-Solution to Advent of Code 3rd December 2024 part 2.
-"""
+"""Solution to Advent of Code 3rd December 2024 part 2."""
 
-import os
+from pathlib import Path
 import re
 from operator import mul
 
-INPUT_FILE = os.path.join(os.path.dirname(__file__), "input.txt")
+# Prevents "unused import" warning - mul is used by eval()
+_ = mul
+
+INPUT_FILE = Path(__file__).parent / "input.txt"
 
 
-def read_input(file_path: str) -> str:
+def read_input(file_path: Path) -> str:
     """
     Read the contents of a file and return them as a string.
 
     Args:
-        file_path (str): The path to the input file to be read.
+        file_path (Path): The path to the input file to be read.
 
     Returns:
         str: The contents of the file as a string.
@@ -24,8 +25,7 @@ def read_input(file_path: str) -> str:
         IOError: If there's an issue reading the file.
     """
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.read()
+        return file_path.read_text(encoding="utf-8")
     except FileNotFoundError:
         raise FileNotFoundError(f"The file '{file_path}' does not exist.")
     except IOError as e:
@@ -44,7 +44,7 @@ def find_all_expressions(data: str) -> list[str]:
         data (str): The input string to search for multiplication expressions.
 
     Returns:
-        List[str]: A list of all found relevant expressions.
+        list[str]: A list of all found relevant expressions.
     """
     pattern = r"(mul\(\d+,\d+\)|do\(\)|don't\(\))"
     matches = re.findall(pattern, data)
@@ -52,9 +52,7 @@ def find_all_expressions(data: str) -> list[str]:
     validated_matches = [
         match
         for match in matches
-        if (match.startswith("mul(") and match.endswith(")"))
-        or match == "do()"
-        or match == "don't()"
+        if (match.startswith("mul(") and match.endswith(")")) or match == "do()" or match == "don't()"
     ]
     return validated_matches
 
@@ -94,7 +92,7 @@ def filter_all_enabled_muls(expressions: list[str]) -> list[str]:
     return enabled_muls
 
 
-def solve(input_file: str = INPUT_FILE) -> int:
+def solve(input_file: Path = INPUT_FILE) -> int:
     """
     Solve the Advent of Code challenge for the given input file.
 
@@ -102,13 +100,11 @@ def solve(input_file: str = INPUT_FILE) -> int:
     expressions, evaluates them, and returns their total sum.
 
     Args:
-        input_file (str, optional): Path to the input file.
-        Defaults to INPUT_FILE.
+        input_file (Path, optional): Path to the input file. Defaults to INPUT_FILE.
 
     Returns:
         int: The total sum of all multiplications.
     """
-
     input_content = read_input(input_file)
     all_expressions = find_all_expressions(input_content)
     all_muls = filter_all_enabled_muls(all_expressions)

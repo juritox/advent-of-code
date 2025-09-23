@@ -1,0 +1,10 @@
+[tool.pydocstyle]
+add-ignore = ["D107"]  # Ignore missing docstring in __init__ methods
+
+[tool.pydoclint]
+exclude = "\\.venv|\\.git"
+style = "google"
+check-arg-order = true
+check-yield-types = true
+arg-type-hints-in-signature = true
+arg-type-hints-in-docstring = true
