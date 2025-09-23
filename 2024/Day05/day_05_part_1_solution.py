@@ -40,7 +40,7 @@ def read_ordering_rules(puzzle: str) -> tuple[list[str], int]:
             - int: Index where the updates section begins
     """
     lines = puzzle.splitlines()
-    ordering_rules = []
+    ordering_rules: list[str] = []
     for line in lines:
         if "|" not in line:
             rules_end_index = lines.index(line)
@@ -63,10 +63,7 @@ def read_updates(puzzle: str, start_index: int) -> list[str]:
         list[str]: List of update strings from the puzzle input.
     """
     lines = puzzle.splitlines()
-    updates = []
-    for line in lines[start_index:]:
-        updates.append(line)
-    return updates
+    return lines[start_index:]
 
 
 def check_rules(update: str, rules: list[str]) -> bool:
@@ -81,7 +78,7 @@ def check_rules(update: str, rules: list[str]) -> bool:
         bool: True if the update follows all rules, False otherwise.
     """
     pages = update.split(",")
-    checked_pages = []
+    checked_pages: list[str] = []
     for page in pages:
         for rule in rules:
             rule_parts = rule.split("|")
@@ -125,11 +122,11 @@ def solve(input_file: Path = INPUT_FILE) -> int:
     input_content = read_input(input_file)
     ordering_rules, updates_start_index = read_ordering_rules(input_content)
     updates = read_updates(input_content, updates_start_index)
-    printed_updates = []
+    printed_updates: list[str] = []
     for update in updates:
         if check_rules(update, ordering_rules):
             printed_updates.append(update)
-    middle_page_numbers = []
+    middle_page_numbers: list[int] = []
     for printed_update in printed_updates:
         middle_page_numbers.append(extract_middle_number(printed_update))
 

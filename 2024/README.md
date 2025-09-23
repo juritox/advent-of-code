@@ -9,7 +9,7 @@ Python solutions for [Advent of Code 2024](https://adventofcode.com/2024) progra
 - [x] Day 2 (⭐⭐)
 - [x] Day 3 (⭐⭐)
 - [x] Day 4 (⭐⭐)
-- [ ] Day 5 (⭐)
+- [x] Day 5 (⭐⭐)
 - [ ] Day 6
 - [ ] Day 7
 - [ ] Day 8
